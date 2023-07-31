@@ -23,6 +23,11 @@ public class PokemonController {
     public ResponseEntity<Pokemon> findByNamePokemon(@PathVariable String name){
         return new ResponseEntity<>(pokeAPIService.findByName(name), HttpStatus.OK) ;
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Pokemon> findByIdPokemon(@PathVariable Integer id){
+        return new ResponseEntity<>(pokeAPIService.findById(id), HttpStatus.OK);
+    }
+
 
    /* @GetMapping("/name/ditto/move")
     public ResponseEntity<> findByNamePokemon1(){

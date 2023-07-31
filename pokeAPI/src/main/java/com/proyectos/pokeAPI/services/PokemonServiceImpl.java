@@ -29,8 +29,8 @@ public class PokemonServiceImpl implements PokeAPIService<Pokemon>{
     public Pokemon findById(Integer id) {
         try {
             return webClient.get()
-                    .uri("/pokemon/{id}", id).retrieve().onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
-                            response -> response.bodyToMono(Pokemon.class).map(pokemon -> new Exception("Internal Server Error"))).bodyToMono(Pokemon.class).block();
+                    .uri("/pokemon/{id}", id).retrieve().onStatus(HttpStatus.NOT_FOUND::equals,
+                            response -> response.bodyToMono(Pokemon.class).map(pokemon -> new Exception("Not Found"))).bodyToMono(Pokemon.class).block();
         }catch (Exception e){
             logger.error("Error: {}", e.getMessage());
             return null;
