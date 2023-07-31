@@ -5,21 +5,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Primary
 @Service
-public class PokemonService implements PokeAPIService<Pokemon>{
+public class PokemonServiceImpl implements PokeAPIService<Pokemon>{
     private final WebClient webClient;
-    private static final Logger logger = LoggerFactory.getLogger(PokemonService.class);
+    private static final Logger logger = LoggerFactory.getLogger(PokemonServiceImpl.class);
 
-    public PokemonService(WebClient webClient){
+    public PokemonServiceImpl(WebClient webClient){
         this.webClient = webClient;
     }
     @Override
@@ -30,14 +28,13 @@ public class PokemonService implements PokeAPIService<Pokemon>{
     @Override
     public Pokemon findById(Integer id) {
         try {
-            Mono<Pokemon> response = webClient.get()
-                    .uri("/pokemon/{id}", id).retrieve()
-                    .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, clientResponse -> response.bodyToMono(Pokemon.class).map(CustomServerErrorException::new))
-                    .onStatus(HttpStatus.BAD_REQUEST::equals, response -> response.bodyToMono(Pokemon.class).map( new WebClientResponseException));
-
+            return webClient.get()
+                    .uri("/pokemon/{id}", id).retrieve().onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
+                            response -> response.bodyToMono(Pokemon.class).map(pokemon -> new Exception("Internal Server Error"))).bodyToMono(Pokemon.class).block();
+        }catch (Exception e){
+            logger.error("Error: {}", e.getMessage());
+            return null;
         }
-
-        return null;
     }
 
     @Override
