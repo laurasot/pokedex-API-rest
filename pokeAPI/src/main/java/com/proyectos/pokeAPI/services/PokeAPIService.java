@@ -1,6 +1,5 @@
 package com.proyectos.pokeAPI.services;
 
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -11,5 +10,7 @@ public interface PokeAPIService<T> {
      T findById(Integer id);
 
      T findByName(String name);
+
+     //Mono<ReturnedI> errorStatus(String endpoint);
 
 }

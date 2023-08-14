@@ -1,21 +1,19 @@
 package com.proyectos.pokeAPI.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyectos.pokeAPI.entities.Pokemon;
 import com.proyectos.pokeAPI.services.PokeAPIService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pokemon")
 public class PokemonController {
-    //@Qualifier()
     private final PokeAPIService<Pokemon> pokeAPIService;
+
+    private static final Logger logger = LoggerFactory.getLogger(PokemonController.class);
     public PokemonController(PokeAPIService<Pokemon> pokeAPIService){
         this.pokeAPIService = pokeAPIService;
     }
@@ -29,8 +27,4 @@ public class PokemonController {
     }
 
 
-   /* @GetMapping("/name/ditto/move")
-    public ResponseEntity<> findByNamePokemon1(){
-        return new ResponseEntity<>(pokeAPIService.findByName("hola"), HttpStatus.OK) ;
-    }*/
 }
